@@ -2,6 +2,7 @@ AllCops:
   Exclude:
     - db/schema.rb
     - bin/**/*
+    - "spec/spec_helper.rb"
   TargetRubyVersion: 2.5.1
 
 Style/FrozenStringLiteralComment:
@@ -27,3 +28,7 @@ Metrics/ClassLength:
 
 Style/ClassAndModuleChildren:
   Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - "**/*_spec.rb"

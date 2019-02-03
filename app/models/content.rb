@@ -4,7 +4,7 @@ class Content < ApplicationRecord
   validates :summary, length: { maximum: 50 }
   validates :content, length: { maximum: 250 }
   after_commit :flush_cache
-  after_create :perform_status_check, on: :create
+  after_commit :perform_status_check, on: :create
 
   def flush_cache
     Rails.cache.delete('contents')
@@ -17,9 +17,9 @@ class Content < ApplicationRecord
   end
 
   def perform_status_check
-    if published_date <= Time.now
-      self.published!
-    elsif self.draft?
+    if published_date.utc <= Time.now.utc
+      published!
+    elsif draft?
       MarkPublishedJob.set(wait_until: published_date).perform_later(self)
     end
   end
